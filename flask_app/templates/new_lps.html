@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add New LPS | LPSChileCollection
+{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">Add New LPS</h2>
+
+<div class="form-container">
+
+
+
+    <form action="{{ url_for('create_lps') }}" method="POST">
+
+        <label for="id">LPS ID</label>
+
+        <input
+            type="text"
+            id="id"
+            name="id"
+            placeholder="Example: g2-001"
+            required
+        >
+
+        <label for="name">Name</label>
+
+        <input
+            type="text"
+            id="name"
+            name="name"
+            required
+        >
+
+        <label for="generation">Generation</label>
+
+        <select
+            id="generation"
+            name="generation"
+            required
+        >
+            <option value="">Select generation</option>
+            <option value="G1">G1</option>
+            <option value="G2">G2</option>
+            <option value="G3">G3</option>
+            <option value="G4">G4</option>
+            <option value="G5">G5</option>
+            <option value="G6">G6</option>
+            <option value="G7">G7</option>
+        </select>
+
+        <label for="category">Category</label>
+
+        <input
+            type="text"
+            id="category"
+            name="category"
+            placeholder="Example: Kenner or Hasbro"
+            required
+        >
+
+        <label for="year">Year</label>
+
+        <input
+            type="number"
+            id="year"
+            name="year"
+            min="1992"
+            max="2100"
+        >
+
+        <label for="species">Species</label>
+
+        <input
+            type="text"
+            id="species"
+            name="species"
+            placeholder="Example: Dogs"
+        >
+
+        <label for="image">Image URL</label>
+
+        <input
+            type="url"
+            id="image"
+            name="image"
+            placeholder="https://..."
+            required
+        >
+
+        <label for="status">Status</label>
+
+        <select
+            id="status"
+            name="status"
+            required
+        >
+            <option value="wishlist">Wishlist</option>
+            <option value="owned">Owned</option>
+        </select>
+
+        <label class="checkbox-label">
+
+            <input
+                type="checkbox"
+                name="priority"
+                value="1"
+            >
+
+            Priority
+
+        </label>
+
+        <label class="checkbox-label">
+
+            <input
+                type="checkbox"
+                name="favorite"
+                value="1"
+            >
+
+            Favorite
+
+        </label>
+
+        <label class="checkbox-label">
+
+            <input
+                type="checkbox"
+                name="trade"
+                value="1"
+            >
+
+            Available for trade
+
+        </label>
+
+        <button type="submit" class="submit-btn">
+            Save LPS
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

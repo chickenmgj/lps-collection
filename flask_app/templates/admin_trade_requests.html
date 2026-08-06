@@ -1,0 +1,783 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Trade Requests | Admin
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-trade-requests-page">
+
+    <div class="collection-heading">
+
+        <div class="collection-heading-text">
+
+            <h1 class="page-title">
+                Trade Requests
+            </h1>
+
+            <p>
+                Review and manage the exchange requests sent by registered users.
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for('admin_dashboard') }}"
+            class="trade-back-link"
+        >
+            Back to Admin
+        </a>
+
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            <div class="auth-messages">
+
+                {% for message in messages %}
+
+                    <div class="auth-message trade-success-message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+    {% if trade_requests %}
+
+        <div class="admin-trade-requests-list">
+
+            {% for trade_request in trade_requests %}
+
+                <article class="admin-trade-request-card">
+
+                    <div class="admin-trade-request-header">
+
+                        <div>
+
+                            <span class="trade-request-label">
+                                Request #{{ trade_request.id }}
+                            </span>
+
+                            <h2>
+                                {{ trade_request.user_name }}
+                                wants {{ trade_request.lps_name }}
+                            </h2>
+
+                            <p>
+                                Sent on
+                                {{ trade_request.created_at.strftime("%d/%m/%Y at %H:%M") }}
+                            </p>
+
+                        </div>
+
+                        {% if trade_request.was_first_trade %}
+
+    <div class="first-trade-admin-alert">
+
+        <div>
+            <strong>
+                First trade
+            </strong>
+
+            <p>
+                This user had no completed trades when this request was submitted.
+            </p>
+        </div>
+
+        {% if trade_request.first_trade_send_first_accepted %}
+
+            <span class="first-trade-accepted">
+                ✓ Send first accepted
+            </span>
+
+        {% else %}
+
+            <span class="first-trade-not-accepted">
+                ✕ Send first not accepted
+            </span>
+
+        {% endif %}
+
+    </div>
+
+{% else %}
+
+    <div class="experienced-trader-alert">
+
+        <strong>
+            Previous completed trade
+        </strong>
+
+        <span>
+            This request was submitted by a returning trader.
+        </span>
+
+    </div>
+
+{% endif %}
+
+                        <span class="trade-status trade-status-{{ trade_request.status }}">
+                            {{ trade_request.status.replace("_", " ")|title }}
+                        </span>
+
+                    </div>
+
+                    <div class="admin-trade-request-grid">
+
+                        <div class="admin-requested-item">
+
+                            <h3>
+                                Requested item
+                            </h3>
+
+                            <img
+                                src="{{ trade_request.lps_image }}"
+                                alt="{{ trade_request.lps_name }}"
+                            >
+
+                            <strong>
+                                {{ trade_request.lps_name }}
+                            </strong>
+
+                            <span>
+                                {{ trade_request.lps_generation }}
+                                · ID {{ trade_request.lps_id }}
+                            </span>
+
+                        </div>
+
+                        <div class="admin-trade-request-details">
+
+                            <div class="admin-detail-row">
+                                <strong>User</strong>
+                                <span>{{ trade_request.user_name }}</span>
+                            </div>
+
+                            <div class="admin-detail-row">
+                                <strong>Email</strong>
+                                <span>{{ trade_request.user_email }}</span>
+                            </div>
+
+                            <div class="admin-detail-row">
+                                <strong>Instagram</strong>
+                                <span>{{ trade_request.instagram_username }}</span>
+                            </div>
+
+                            <div class="admin-detail-row">
+                                <strong>Offering</strong>
+                                <span>{{ trade_request.offered_item }}</span>
+                            </div>
+
+                            <div class="admin-detail-block">
+
+                                <strong>
+                                    Item condition
+                                </strong>
+
+                                <p>
+                                    {{ trade_request.item_condition }}
+                                </p>
+
+                            </div>
+
+                            {% if trade_request.message %}
+
+                                <div class="admin-detail-block">
+
+                                    <strong>
+                                        Additional message
+                                    </strong>
+
+                                    <p>
+                                        {{ trade_request.message }}
+                                    </p>
+
+                                </div>
+
+                            {% endif %}
+
+                            {% if trade_request.proof_link %}
+
+                                <a
+                                    href="{{ trade_request.proof_link }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="trade-secondary-button"
+                                >
+                                    View Instagram proofs
+                                </a>
+
+                            {% else %}
+
+                                <p class="no-proof-message">
+                                    No proofs link was provided.
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <div class="admin-trade-photos">
+
+                        <h3>
+                            Submitted photos
+                        </h3>
+
+                        <div class="admin-trade-photo-grid">
+
+                            <a
+                                href="{{ url_for(
+                                    'static',
+                                    filename=trade_request.verification_photo
+                                ) }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="admin-trade-photo"
+                            >
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename=trade_request.verification_photo
+                                    ) }}"
+                                    alt="Verification photo"
+                                >
+
+                                <span>
+                                    Verification photo
+                                </span>
+
+                            </a>
+
+                            <a
+                                href="{{ url_for(
+                                    'static',
+                                    filename=trade_request.additional_photo_1
+                                ) }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="admin-trade-photo"
+                            >
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename=trade_request.additional_photo_1
+                                    ) }}"
+                                    alt="Additional photo 1"
+                                >
+
+                                <span>
+                                    Additional photo 1
+                                </span>
+
+                            </a>
+
+                            {% if trade_request.additional_photo_2 %}
+
+                                <a
+                                    href="{{ url_for(
+                                        'static',
+                                        filename=trade_request.additional_photo_2
+                                    ) }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="admin-trade-photo"
+                                >
+
+                                    <img
+                                        src="{{ url_for(
+                                            'static',
+                                            filename=trade_request.additional_photo_2
+                                        ) }}"
+                                        alt="Additional photo 2"
+                                    >
+
+                                    <span>
+                                        Additional photo 2
+                                    </span>
+
+                                </a>
+
+                            {% endif %}
+
+                            {% if trade_request.additional_photo_3 %}
+
+                                <a
+                                    href="{{ url_for(
+                                        'static',
+                                        filename=trade_request.additional_photo_3
+                                    ) }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="admin-trade-photo"
+                                >
+
+                                    <img
+                                        src="{{ url_for(
+                                            'static',
+                                            filename=trade_request.additional_photo_3
+                                        ) }}"
+                                        alt="Additional photo 3"
+                                    >
+
+                                    <span>
+                                        Additional photo 3
+                                    </span>
+
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <div class="admin-trade-management">
+
+                        <div class="admin-status-panel">
+
+                            <h3>
+                                Update request status
+                            </h3>
+
+                            <form
+                                action="{{ url_for(
+                                    'update_trade_request_status',
+                                    request_id=trade_request.id
+                                ) }}"
+                                method="POST"
+                                class="admin-status-form"
+                            >
+
+                                <select
+                                    name="status"
+                                    aria-label="Trade request status"
+                                    required
+                                >
+
+                                    <option
+                                        value="pending"
+                                        {% if trade_request.status == "pending" %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        Pending
+                                    </option>
+
+                                    <option
+                                        value="accepted"
+                                        {% if trade_request.status == "accepted" %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        Accepted
+                                    </option>
+
+                                    <option
+                                        value="rejected"
+                                        {% if trade_request.status == "rejected" %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        Rejected
+                                    </option>
+
+                                    <option
+                                        value="more_info"
+                                        {% if trade_request.status == "more_info" %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        More information required
+                                    </option>
+
+                                    <option
+                                        value="completed"
+                                        {% if trade_request.status == "completed" %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        Completed
+                                    </option>
+
+                                </select>
+
+                                <button
+                                    type="submit"
+                                    class="auth-submit"
+                                >
+                                    Update status
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                        {% if trade_request.status in [
+                            "accepted",
+                            "user_shipped",
+                            "admin_shipped",
+                            "both_shipped"
+                        ] %}
+
+                            <div class="admin-shipping-panel">
+
+                                <h3>
+                                    My shipping information
+                                </h3>
+
+                                {% if trade_request.admin_shipped_at %}
+
+                                    <div class="shipping-saved-box">
+
+                                        <div class="admin-detail-row">
+                                            <strong>Shipping company</strong>
+                                            <span>
+                                                {{ trade_request.admin_shipping_company }}
+                                            </span>
+                                        </div>
+
+                                        <div class="admin-detail-row">
+                                            <strong>Tracking number</strong>
+                                            <span>
+                                                {{ trade_request.admin_tracking_number }}
+                                            </span>
+                                        </div>
+
+                                        {% if trade_request.admin_tracking_url %}
+
+                                            <a
+                                                href="{{ trade_request.admin_tracking_url }}"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="trade-secondary-button"
+                                            >
+                                                Track shipment
+                                            </a>
+
+                                        {% endif %}
+
+                                        {% if trade_request.admin_shipping_note %}
+
+                                            <div class="admin-detail-block">
+
+                                                <strong>
+                                                    Shipping note
+                                                </strong>
+
+                                                <p>
+                                                    {{ trade_request.admin_shipping_note }}
+                                                </p>
+
+                                            </div>
+
+                                        {% endif %}
+
+                                        {% if trade_request.admin_package_photo %}
+
+                                            <a
+                                                href="{{ url_for(
+                                                    'static',
+                                                    filename=trade_request.admin_package_photo
+                                                ) }}"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="admin-package-preview"
+                                            >
+
+                                                <img
+                                                    src="{{ url_for(
+                                                        'static',
+                                                        filename=trade_request.admin_package_photo
+                                                    ) }}"
+                                                    alt="Admin package photo"
+                                                >
+
+                                                <span>
+                                                    View package photo
+                                                </span>
+
+                                            </a>
+
+                                        {% endif %}
+
+                                        <p class="shipping-date">
+                                            Sent on:
+                                            {{ trade_request.admin_shipped_at.strftime(
+                                                "%d/%m/%Y at %H:%M"
+                                            ) }}
+                                        </p>
+
+                                    </div>
+
+                                {% else %}
+
+                                    <form
+                                        action="{{ url_for(
+                                            'update_admin_trade_shipping',
+                                            request_id=trade_request.id
+                                        ) }}"
+                                        method="POST"
+                                        enctype="multipart/form-data"
+                                        class="admin-shipping-form"
+                                    >
+
+                                        <div class="form-group">
+
+                                            <label for="admin_shipping_company_{{ trade_request.id }}">
+                                                Shipping company *
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                id="admin_shipping_company_{{ trade_request.id }}"
+                                                name="admin_shipping_company"
+                                                placeholder="Example: Correos de Chile"
+                                                maxlength="100"
+                                                required
+                                            >
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <label for="admin_tracking_number_{{ trade_request.id }}">
+                                                Tracking number *
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                id="admin_tracking_number_{{ trade_request.id }}"
+                                                name="admin_tracking_number"
+                                                placeholder="Enter the tracking number"
+                                                maxlength="150"
+                                                required
+                                            >
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <label for="admin_tracking_url_{{ trade_request.id }}">
+                                                Tracking website
+                                            </label>
+
+                                            <input
+                                                type="url"
+                                                id="admin_tracking_url_{{ trade_request.id }}"
+                                                name="admin_tracking_url"
+                                                placeholder="https://..."
+                                                maxlength="500"
+                                            >
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <label for="admin_shipping_note_{{ trade_request.id }}">
+                                                Note for the user
+                                            </label>
+
+                                            <textarea
+                                                id="admin_shipping_note_{{ trade_request.id }}"
+                                                name="admin_shipping_note"
+                                                rows="4"
+                                                placeholder="Add packaging or shipping details..."
+                                            ></textarea>
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <label for="admin_package_photo_{{ trade_request.id }}">
+                                                Package photo *
+                                            </label>
+
+                                            <input
+                                                type="file"
+                                                id="admin_package_photo_{{ trade_request.id }}"
+                                                name="admin_package_photo"
+                                                accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp"
+                                                required
+                                            >
+
+                                            <small>
+                                                Upload a clear photo of the prepared package.
+                                            </small>
+
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            class="auth-submit"
+                                        >
+                                            Save shipping information
+                                        </button>
+
+                                    </form>
+
+                                {% endif %}
+
+                            </div>
+
+                        {% endif %}
+
+                        {% if trade_request.user_shipped_at %}
+
+                            <div class="admin-user-shipping-panel">
+
+                                <h3>
+                                    User shipping information
+                                </h3>
+
+                                <div class="shipping-saved-box">
+
+                                    <div class="admin-detail-row">
+                                        <strong>Shipping company</strong>
+                                        <span>
+                                            {{ trade_request.user_shipping_company }}
+                                        </span>
+                                    </div>
+
+                                    <div class="admin-detail-row">
+                                        <strong>Tracking number</strong>
+                                        <span>
+                                            {{ trade_request.user_tracking_number }}
+                                        </span>
+                                    </div>
+
+                                    {% if trade_request.user_tracking_url %}
+
+                                        <a
+                                            href="{{ trade_request.user_tracking_url }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="trade-secondary-button"
+                                        >
+                                            Track user shipment
+                                        </a>
+
+                                    {% endif %}
+
+                                    {% if trade_request.user_shipping_note %}
+
+                                        <div class="admin-detail-block">
+
+                                            <strong>
+                                                User note
+                                            </strong>
+
+                                            <p>
+                                                {{ trade_request.user_shipping_note }}
+                                            </p>
+
+                                        </div>
+
+                                    {% endif %}
+
+                                    {% if trade_request.user_package_photo %}
+
+                                        <a
+                                            href="{{ url_for(
+                                                'static',
+                                                filename=trade_request.user_package_photo
+                                            ) }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="admin-package-preview"
+                                        >
+
+                                            <img
+                                                src="{{ url_for(
+                                                    'static',
+                                                    filename=trade_request.user_package_photo
+                                                ) }}"
+                                                alt="User package photo"
+                                            >
+
+                                            <span>
+                                                View user package photo
+                                            </span>
+
+                                        </a>
+
+                                    {% endif %}
+
+                                    <p class="shipping-date">
+                                        Sent on:
+                                        {{ trade_request.user_shipped_at.strftime(
+                                            "%d/%m/%Y at %H:%M"
+                                        ) }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                    {% if trade_request.status == "completed" %}
+
+                        <div class="completed-trade-actions">
+
+                            <form
+                                action="{{ url_for(
+                                    'delete_completed_trade_request',
+                                    request_id=trade_request.id
+                                ) }}"
+                                method="POST"
+                                onsubmit="return confirm('Are you sure you want to permanently delete this completed trade? This action cannot be undone.');"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="delete-completed-trade-button"
+                                >
+                                    Delete completed trade
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    {% endif %}
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-message">
+
+            <h2>
+                No trade requests
+            </h2>
+
+            <p>
+                No users have submitted a trade request yet.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% from "macros/lps_card.html" import render_lps_card %}
+{% from "macros/collection_stats.html" import render_collection_stats %}
+{% from "macros/filters.html" import render_filters %}
+
+{% block title %}
+    Trade | LPSChileCollection
+{% endblock %}
+
+{% block body_attributes %}
+    data-page="trade"
+{% endblock %}
+
+{% block content %}
+
+<div class="collection-heading">
+
+    <div class="collection-heading-text">
+
+        <h2 class="page-title">
+            Trade
+        </h2>
+
+        <p>
+            Browse the Littlest Pet Shop items I currently have available for trade.
+        </p>
+
+    </div>
+
+    {{ render_collection_stats(counts) }}
+
+</div>
+
+{{ render_filters(search, selected_generation, selected_order) }}
+
+{% if "user_id" not in session %}
+
+    <div class="trade-login-box">
+
+        <div class="trade-login-text">
+
+            <h3>
+                Interested in a trade?
+            </h3>
+
+            <p>
+                Create an account or log in to send a trade request.
+            </p>
+
+        </div>
+
+        <div class="trade-login-actions">
+
+            <a
+                href="{{ url_for('user_register_form') }}"
+                class="trade-register-button"
+            >
+                Create account
+            </a>
+
+            <a
+                href="{{ url_for('user_login_form') }}"
+                class="trade-login-button"
+            >
+                Log in
+            </a>
+
+        </div>
+
+    </div>
+
+{% else %}
+
+    <div class="trade-login-box">
+
+        <div class="trade-login-text">
+
+            <h3>
+                Welcome, {{ session["user_name"] }}
+            </h3>
+
+            <p>
+                Send a trade request or review the status of your existing requests.
+            </p>
+
+        </div>
+
+        <div class="trade-login-actions">
+
+            {% if session.get("user_role") == "user" %}
+
+                <a
+                    href="{{ url_for('my_trade_requests') }}"
+                    class="trade-register-button"
+                >
+                    My Trade Requests
+                </a>
+
+            {% endif %}
+
+            <a
+                href="{{ url_for('user_logout') }}"
+                class="trade-login-button"
+            >
+                Log out
+            </a>
+
+        </div>
+
+    </div>
+
+{% endif %}
+
+<div class="exchange-note">
+
+    <p>
+        <strong>Note:</strong> These are my Littlest Pet Shop items
+        available for trade. If you’d like to see more photos,
+        details, or have any questions, please contact me on Instagram!
+    </p>
+
+    <a
+        href="https://www.instagram.com/lpschilecollection/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="instagram-btn"
+    >
+        Contact me on Instagram
+    </a>
+
+</div>
+
+<section class="categoria">
+
+    <div class="categoria-info">
+
+        <strong>
+            Available for Trade
+        </strong>
+
+        <span>
+            {{ lps_items|length }} items
+        </span>
+
+    </div>
+
+    <div class="cards-grid">
+
+        {% for item in lps_items %}
+
+            {{ render_lps_card(item, show_trade=true) }}
+
+        {% else %}
+
+            <div class="empty-message">
+
+                <p>
+                    There are no items available for trade at the moment.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

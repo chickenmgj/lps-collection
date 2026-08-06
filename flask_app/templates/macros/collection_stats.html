@@ -1,0 +1,43 @@
+{% macro render_collection_stats(counts) %}
+
+<div class="collection-stats">
+
+    <a
+        href="{{ url_for('collection') }}"
+        class="collection-stat"
+    >
+        <span class="stat-icon">✓</span>
+
+        <div>
+            <strong>{{ counts.owned_count }}</strong>
+            <span>Owned</span>
+        </div>
+    </a>
+
+    <a
+        href="{{ url_for('wishlist') }}"
+        class="collection-stat"
+    >
+        <span class="stat-icon">♡</span>
+
+        <div>
+            <strong>{{ counts.wishlist_count }}</strong>
+            <span>Wishlist</span>
+        </div>
+    </a>
+
+    <a
+        href="{{ url_for('trade') }}"
+        class="collection-stat"
+    >
+        <span class="stat-icon">↔</span>
+
+        <div>
+            <strong>{{ counts.trade_count }}</strong>
+            <span>For Trade</span>
+        </div>
+    </a>
+
+</div>
+
+{% endmacro %}

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Edit LPS | LPSChileCollection
+{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">Edit LPS</h2>
+
+<div class="form-container">
+
+    <form
+        action="{{ url_for('update_lps', lps_id=item.id) }}"
+        method="POST"
+    >
+
+        <label for="lps_id">LPS ID</label>
+
+        <input
+            type="text"
+            id="lps_id"
+            value="{{ item.id }}"
+            disabled
+        >
+
+        <label for="name">Name</label>
+
+        <input
+            type="text"
+            id="name"
+            name="name"
+            value="{{ item.name }}"
+            required
+        >
+
+        <label for="generation">Generation</label>
+
+        <select
+            id="generation"
+            name="generation"
+            required
+        >
+
+            {% for generation in ["G1", "G2", "G3", "G4", "G5", "G6", "G7"] %}
+
+                <option
+                    value="{{ generation }}"
+                    {% if item.generation == generation %}
+                        selected
+                    {% endif %}
+                >
+                    {{ generation }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <label for="category">Category</label>
+
+        <input
+            type="text"
+            id="category"
+            name="category"
+            value="{{ item.category }}"
+            required
+        >
+
+        <label for="year">Year</label>
+
+        <input
+            type="number"
+            id="year"
+            name="year"
+            value="{{ item.year or '' }}"
+            min="1992"
+            max="2100"
+        >
+
+        <label for="species">Species</label>
+
+        <input
+            type="text"
+            id="species"
+            name="species"
+            value="{{ item.species or '' }}"
+        >
+
+        <label for="image">Image URL</label>
+
+        <input
+            type="url"
+            id="image"
+            name="image"
+            value="{{ item.image }}"
+            required
+        >
+
+        <label for="status">Status</label>
+
+        <select
+            id="status"
+            name="status"
+            required
+        >
+
+            <option
+                value="wishlist"
+                {% if item.status == "wishlist" %}
+                    selected
+                {% endif %}
+            >
+                Wishlist
+            </option>
+
+            <option
+                value="owned"
+                {% if item.status == "owned" %}
+                    selected
+                {% endif %}
+            >
+                Owned
+            </option>
+
+        </select>
+
+        <label class="checkbox-label">
+
+            <input
+                type="checkbox"
+                name="priority"
+                value="1"
+                {% if item.priority %}
+                    checked
+                {% endif %}
+            >
+
+            Priority
+
+        </label>
+
+        <label class="checkbox-label">
+
+            <input
+                type="checkbox"
+                name="favorite"
+                value="1"
+                {% if item.favorite %}
+                    checked
+                {% endif %}
+            >
+
+            Favorite
+
+        </label>
+
+        <label class="checkbox-label">
+
+            <input
+                type="checkbox"
+                name="trade"
+                value="1"
+                {% if item.trade %}
+                    checked
+                {% endif %}
+            >
+
+            Available for trade
+
+        </label>
+
+        <button type="submit" class="submit-btn">
+            Save Changes
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,181 @@
+{% macro render_lps_card(item, show_trade=false, admin_mode=false) %}
+
+{% if admin_mode %}
+
+    <article class="lps-card admin-lps-card" data-id="{{ item.id }}">
+
+        {% if item.priority %}
+            <div class="priority-badge">
+                ⭐ PRIORITY
+            </div>
+        {% endif %}
+
+        {% if item.favorite %}
+            <div class="favorite-badge">
+                ♥
+            </div>
+        {% endif %}
+
+        <img
+            src="{{ item.image }}"
+            alt="{{ item.name }}"
+            loading="lazy"
+        >
+
+        <h3 class="lps-name">
+            {{ item.name }}
+        </h3>
+
+        <p class="lps-meta">
+            {{ item.generation }} · {{ item.category }}
+
+            {% if item.year %}
+                · {{ item.year }}
+            {% endif %}
+        </p>
+
+        <span class="status-badge">
+            {{ item.status }}
+        </span>
+
+        {% if item.trade %}
+            <span class="trade-badge">
+                Available for trade
+            </span>
+        {% endif %}
+
+        <div class="admin-card-actions">
+
+            <a
+                href="{{ url_for('edit_lps_form', lps_id=item.id) }}"
+                class="edit-lps-btn"
+            >
+                Edit
+            </a>
+
+            <form
+                action="{{ url_for('delete_lps', lps_id=item.id) }}"
+                method="POST"
+                onsubmit="return confirm('Are you sure you want to delete this item?');"
+            >
+                <button
+                    type="submit"
+                    class="delete-lps-btn"
+                >
+                    Delete
+                </button>
+            </form>
+
+        </div>
+
+    </article>
+
+{% else %}
+
+    <article class="public-lps-card" data-id="{{ item.id }}">
+
+        <div class="public-card-image">
+
+            <img
+                src="{{ item.image }}"
+                alt="{{ item.name }}"
+                loading="lazy"
+            >
+
+            {% if item.favorite %}
+                <span
+                    class="public-favorite"
+                    title="Favorite"
+                    aria-label="Favorite"
+                >
+                    ♥
+                </span>
+            {% endif %}
+
+            {% if item.priority %}
+                <span class="public-priority">
+                    Priority
+                </span>
+            {% endif %}
+
+        </div>
+
+        <div class="public-card-content">
+
+            <h3 class="public-card-title">
+                {{ item.name }}
+            </h3>
+
+            <div class="public-card-meta">
+
+                <span>
+                    ✦ {{ item.generation }}
+                </span>
+
+                <span>
+                    ◇ {{ item.category }}
+                </span>
+
+                {% if item.year %}
+                    <span>
+                        ▣ {{ item.year }}
+                    </span>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% if show_trade and item.trade %}
+
+            <div class="trade-card-action">
+
+                {% if session.get("user_role") == "user" %}
+
+                    <a
+                        href="{{ url_for('trade_request_form', lps_id=item.id) }}"
+                        class="request-trade-button"
+                    >
+                        Request Trade
+                    </a>
+
+                {% elif "user_id" not in session %}
+
+                    <a
+                        href="{{ url_for('user_login_form') }}"
+                        class="request-trade-button"
+                    >
+                        Log in to request
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+        {% if show_trade %}
+
+            <div class="public-card-status trade-status">
+                ↔ Available for trade
+            </div>
+
+        {% elif item.status == "owned" %}
+
+            <div class="public-card-status owned-status">
+                ✓ Owned
+            </div>
+
+        {% else %}
+
+            <div class="public-card-status wishlist-status">
+                ♡ Wishlist
+            </div>
+
+        {% endif %}
+
+    </article>
+
+{% endif %}
+
+{% endmacro %}

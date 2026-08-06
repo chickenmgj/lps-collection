@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% from "macros/lps_card.html" import render_lps_card %}
+{% from "macros/collection_stats.html" import render_collection_stats %}
+{% from "macros/filters.html" import render_filters %}
+
+{% block title %}
+    Wishlist | LPSChileCollection
+{% endblock %}
+
+{% block body_attributes %}
+    data-page="wishlist"
+{% endblock %}
+
+{% block content %}
+
+<div class="collection-heading">
+
+    <div class="collection-heading-text">
+
+        <h2 class="page-title">
+            My Wishlist
+        </h2>
+
+        <p>
+            Discover the Littlest Pet Shop items I am currently looking for.
+        </p>
+
+    </div>
+
+    {{ render_collection_stats(counts) }}
+
+</div>
+{{ render_filters(search, selected_generation, selected_order) }}
+
+<div class="disclaimer">
+    <p>
+        <strong>Note:</strong> At the moment I am only looking for
+        <u>trades</u>, not purchases. All images were taken from the
+        internet, mostly from Toysisters.com, so credit goes to their
+        original authors and owners.
+    </p>
+</div>
+
+<section class="categoria">
+
+    <div class="categoria-info">
+        <strong>Wishlist Items</strong>
+        <span>{{ lps_items|length }} items</span>
+    </div>
+
+    <div class="cards-grid">
+
+        <div class="cards-grid">
+
+    {% for item in lps_items %}
+
+        {{ render_lps_card(item) }}
+
+    {% else %}
+
+        <div class="empty-message">
+            <p>No items have been added to the wishlist yet.</p>
+        </div>
+
+    {% endfor %}
+
+</div>
+    </div>
+
+</section>
+
+{% endblock %}

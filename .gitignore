@@ -1,0 +1,25 @@
+# Variables privadas
+.env
+
+# Entorno virtual
+venv/
+.venv/
+env/
+Pipfile.lock
+
+# Python
+__pycache__/
+*.py[cod]
+
+# VS Code
+.vscode/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Fotos privadas y archivos subidos
+flask_app/static/uploads/
+
+# Archivos temporales
+*.log

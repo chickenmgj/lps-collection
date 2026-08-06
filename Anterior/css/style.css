@@ -1,0 +1,617 @@
+/* =========================================================
+   LPS COLLECTION - STYLE.CSS
+   Archivo único de estilos
+   ========================================================= */
+
+/* =========================================================
+   1. FUENTE Y VARIABLES
+   ========================================================= */
+
+@font-face {
+  font-family: "MiFuente";
+  src: url("../fonts/WornGothic.ttf") format("truetype");
+}
+
+:root {
+  --primary: #6a0dad;
+  --secondary: #8a2be2;
+  --blue: #004aad;
+  --background: #f0f2f5;
+  --soft-purple: #f5edff;
+  --card: #ffffff;
+  --text: #333333;
+  --muted-text: #555555;
+  --shadow: rgba(0, 0, 0, 0.12);
+  --instagram-1: #f58529;
+  --instagram-2: #dd2a7b;
+  --instagram-3: #8134af;
+  --instagram-4: #515bd4;
+}
+
+/* =========================================================
+   2. RESET GENERAL
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "MiFuente", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background);
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+}
+
+/* =========================================================
+   3. HEADER
+   ========================================================= */
+
+header {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 18px 20px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2em;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* =========================================================
+   4. NAV
+   ========================================================= */
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 15px;
+  background: var(--soft-purple);
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+  background: var(--primary);
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: bold;
+  border: 2px solid var(--primary);
+  transition: 0.3s;
+}
+
+nav a:hover {
+  background: white;
+  color: var(--primary);
+}
+
+/* =========================================================
+   5. MAIN Y TÍTULOS
+   ========================================================= */
+
+main {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
+  text-align: left;
+}
+
+.page-title,
+.elegant-title,
+.section-title {
+  text-align: center;
+  color: var(--primary);
+  margin-bottom: 25px;
+}
+
+.page-title,
+.elegant-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.section-title {
+  font-size: 1.8rem;
+}
+
+/* =========================================================
+   6. HOME / INTRO
+   ========================================================= */
+
+.intro-text {
+  max-width: 700px;
+  margin: 0 auto 30px;
+  text-align: justify;
+  text-align-last: left;
+  line-height: 1.75;
+  hyphens: auto;
+}
+
+.intro-text p {
+  margin-bottom: 18px;
+}
+
+.intro-text strong {
+  color: #5a2a83;
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  max-width: 900px;
+  margin: 0 auto 50px;
+  background: var(--card);
+  padding: 25px 30px;
+  border-radius: 22px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.profile-img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 18px;
+}
+
+.profile-text h3 {
+  margin-top: 0;
+  color: var(--primary);
+  font-size: 1.4rem;
+}
+
+.profile-text p {
+  margin-bottom: 0;
+  line-height: 1.7;
+  color: #444;
+}
+
+/* =========================================================
+   7. NOTAS / DISCLAIMER
+   ========================================================= */
+
+.disclaimer,
+.collection-note,
+.exchange-note {
+  max-width: 800px;
+  margin: 20px auto 40px;
+  padding: 15px 20px;
+  border-radius: 12px;
+  font-size: 0.95em;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.disclaimer {
+  background: #f5f7fa;
+  border-left: 5px solid #2ecc71;
+  color: var(--text);
+}
+
+.collection-note {
+  background: #fff8e6;
+  border-left: 5px solid #f1c40f;
+  color: #444;
+}
+
+.exchange-note {
+  max-width: 700px;
+  background: #eef9ff;
+  border-left: 5px solid #3498db;
+  color: var(--text);
+}
+
+.disclaimer p,
+.collection-note p,
+.exchange-note p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.exchange-note p {
+  margin-bottom: 20px;
+}
+
+/* =========================================================
+   8. SOCIAL BUTTONS
+   ========================================================= */
+
+.instagram-container {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.social-text {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.instagram-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(
+    45deg,
+    var(--instagram-1),
+    var(--instagram-2),
+    var(--instagram-3),
+    var(--instagram-4)
+  );
+  color: white;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: none;
+  margin: 10px auto 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.instagram-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.imgur-btn {
+  background: #1bb76e;
+}
+
+/* =========================================================
+   9. CATEGORÍAS
+   ========================================================= */
+
+.categoria {
+  margin-bottom: 50px;
+}
+
+.categoria-info {
+  background-color: var(--card);
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  font-weight: bold;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.categoria-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* =========================================================
+   10. TARJETAS DINÁMICAS LPS
+   ========================================================= */
+
+.cards-grid,
+.categoria-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.lps-card,
+.foto {
+  position: relative;
+  background: var(--card);
+  border-radius: 18px;
+  padding: 15px;
+  box-shadow: 0 6px 18px var(--shadow);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.lps-card:hover,
+.foto:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.lps-card img,
+.foto img,
+.categoria-gallery img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.3s;
+}
+
+.lps-card img:hover,
+.foto img:hover,
+.categoria-gallery img:hover {
+  transform: scale(1.03);
+}
+
+.lps-name {
+  margin: 12px 0 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.lps-meta {
+  font-size: 0.85rem;
+  color: var(--muted-text);
+  margin: 6px 0;
+}
+
+.descripcion-burbuja {
+  background-color: #f0f0f0;
+  padding: 8px 12px;
+  margin-top: 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: var(--text);
+  display: inline-block;
+  max-width: 100%;
+}
+
+.descripcion {
+  margin-top: 5px;
+  font-size: 0.85rem;
+  color: var(--muted-text);
+}
+
+/* =========================================================
+   11. BADGES / ESTADOS
+   ========================================================= */
+
+.status-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background-color: var(--soft-purple);
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.priority-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #ffd700;
+  color: #222;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  z-index: 5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.favorite-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #ffeff5;
+  color: #dd2a7b;
+  padding: 6px 10px;
+  border-radius: 50%;
+  font-size: 1rem;
+  z-index: 5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+.trade-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #eaf5ff;
+  color: #2479b8;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
+
+/* =========================================================
+   12. BOTONES ADMIN
+   ========================================================= */
+
+.admin-buttons {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+body.admin-mode .admin-buttons {
+  display: flex;
+}
+
+.admin-buttons button,
+.admin-login-btn,
+.logout-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.25s;
+}
+
+.admin-buttons button:hover,
+.admin-login-btn:hover,
+.logout-btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-collection {
+  background: #4caf50;
+  color: white;
+}
+
+.btn-priority {
+  background: #ffd54f;
+  color: #222;
+}
+
+.btn-favorite {
+  background: #ffb6c1;
+  color: #222;
+}
+
+.btn-trade {
+  background: #3498db;
+  color: white;
+}
+
+.admin-login-btn {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  background: var(--primary);
+  color: white;
+  z-index: 2000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================================
+   13. FORMULARIOS / BOTONES GENERALES
+   ========================================================= */
+
+#add-btn,
+#password-section button,
+.form-container .submit-btn,
+.form-container .upload-btn,
+.form-container .delete-btn {
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+#add-btn,
+#password-section button,
+.form-container .submit-btn,
+.form-container .upload-btn {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 10px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#add-btn:hover,
+#password-section button:hover,
+.form-container .submit-btn:hover,
+.form-container .upload-btn:hover {
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+.form-container .delete-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+/* =========================================================
+   14. FOOTER
+   ========================================================= */
+
+.footer {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 15px;
+  margin-top: 40px;
+  font-size: 18px;
+  text-align: center;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.footer-bottom {
+  margin-top: 10px;
+  font-size: 16px;
+  color: white;
+}
+
+/* =========================================================
+   15. RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .cards-grid,
+  .categoria-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  main {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-img {
+    width: 140px;
+    height: 140px;
+  }
+
+  header h1 {
+    font-size: 1.6em;
+  }
+}
+
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  nav a {
+    width: 100%;
+    text-align: center;
+  }
+
+  .cards-grid,
+  .categoria-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .categoria-info {
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+  }
+
+  .lps-card img,
+  .foto img,
+  .categoria-gallery img {
+    height: 250px;
+  }
+
+  .admin-login-btn {
+    right: 12px;
+    bottom: 12px;
+  }
+}

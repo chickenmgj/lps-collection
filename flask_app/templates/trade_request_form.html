@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Request Trade | LPSChileCollection
+{% endblock %}
+
+{% block content %}
+
+<section class="trade-request-page">
+
+    <div class="trade-request-heading">
+
+        <div>
+            <span class="auth-label">
+                Trade Request
+            </span>
+
+            <h1>
+                Request {{ item.name }}
+            </h1>
+
+            <p>
+                Complete the form with accurate information and clear photos
+                of the item you are offering.
+            </p>
+        </div>
+
+        <a href="{{ url_for('trade') }}" class="trade-back-link">
+            Back to Trade
+        </a>
+
+    </div>
+
+    <div class="trade-request-layout">
+
+        <aside class="requested-item-card">
+
+            <div class="requested-item-image">
+
+                <img
+                    src="{{ item.image }}"
+                    alt="{{ item.name }}"
+                >
+
+            </div>
+
+            <div class="requested-item-info">
+
+                <span>
+                    {{ item.generation }}
+                </span>
+
+                <h2>
+                    {{ item.name }}
+                </h2>
+
+                <p>
+                    ID: {{ item.id }}
+                </p>
+
+                {% if item.species %}
+                    <p>
+                        Species: {{ item.species }}
+                    </p>
+                {% endif %}
+
+            </div>
+
+        </aside>
+
+        <div class="trade-request-form-card">
+
+            {% with messages = get_flashed_messages(
+                with_categories=true,
+                category_filter=["trade_request"]
+            ) %}
+
+                {% if messages %}
+
+                    <div class="auth-messages">
+
+                        {% for category, message in messages %}
+
+                            <div class="auth-message auth-message-error">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            {% endwith %}
+
+            <div class="verification-warning">
+
+                <strong>
+                    Verification photo required
+                </strong>
+
+                <p>
+                    The photo must show the item you are offering next to
+                    a handwritten paper with your name or Instagram username
+                    and today’s date.
+                </p>
+
+            </div>
+
+            <form
+                action="{{ url_for('create_trade_request', lps_id=item.id) }}"
+                method="POST"
+                enctype="multipart/form-data"
+                class="trade-request-form"
+            >
+
+                <div class="form-group">
+
+                    <label for="instagram_username">
+                        Instagram username *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="instagram_username"
+                        name="instagram_username"
+                        placeholder="@yourusername"
+                        maxlength="100"
+                        required
+                    >
+
+                    <small>
+                        Your profile will be reviewed for previous trade proofs.
+                    </small>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="proof_link">
+                        Proofs link
+                    </label>
+
+                    <input
+                        type="url"
+                        id="proof_link"
+                        name="proof_link"
+                        placeholder="https://www.instagram.com/..."
+                        maxlength="500"
+                    >
+
+                    <small>
+                        Add a link to your Instagram proofs, highlights or post.
+                    </small>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="offered_item">
+                        What are you offering? *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="offered_item"
+                        name="offered_item"
+                        placeholder="Example: LPS G1 #123"
+                        maxlength="255"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="item_condition">
+                        Item condition *
+                    </label>
+
+                    <textarea
+                        id="item_condition"
+                        name="item_condition"
+                        rows="5"
+                        placeholder="Describe stains, marks, missing accessories, paint wear or other details..."
+                        minlength="10"
+                        required
+                    ></textarea>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="verification_photo">
+                        Verification photo *
+                    </label>
+
+                    <input
+                        type="file"
+                        id="verification_photo"
+                        name="verification_photo"
+                        accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp"
+                        required
+                    >
+
+                    <small>
+                        Must include the item, handwritten username or name,
+                        and today’s date.
+                    </small>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="additional_photo_1">
+                        Additional photo *
+                    </label>
+
+                    <input
+                        type="file"
+                        id="additional_photo_1"
+                        name="additional_photo_1"
+                        accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp"
+                        required
+                    >
+
+                    <small>
+                        Upload a clear front, back or close-up photo.
+                    </small>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="additional_photo_2">
+                        Additional photo 2
+                    </label>
+
+                    <input
+                        type="file"
+                        id="additional_photo_2"
+                        name="additional_photo_2"
+                        accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp"
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="additional_photo_3">
+                        Additional photo 3
+                    </label>
+
+                    <input
+                        type="file"
+                        id="additional_photo_3"
+                        name="additional_photo_3"
+                        accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp"
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="message">
+                        Additional message
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="5"
+                        placeholder="Add any extra information about your offer..."
+                    ></textarea>
+
+                </div>
+
+{% if is_first_trade %}
+
+    <div class="first-trade-warning">
+
+        <strong>
+            First trade condition
+        </strong>
+
+        <p>
+            Because this is your first completed trade through this website,
+            you must send your package first. LPS Chile Collection will send
+            its package after your tracking information and package photo
+            have been reviewed.
+        </p>
+
+        <label class="trade-confirmation">
+
+            <input
+                type="checkbox"
+                name="first_trade_send_first_accepted"
+                value="1"
+                required
+            >
+
+            <span>
+                I understand and agree that I must send my package first
+                because this is my first verified trade through the website.
+            </span>
+
+        </label>
+
+    </div>
+
+{% endif %}
+
+                <label class="trade-confirmation">
+
+                    <input
+                        type="checkbox"
+                        name="confirmation"
+                        required
+                    >
+
+                    <span>
+                        I confirm that the photos and information belong to me
+                        and accurately represent the item offered.
+                    </span>
+
+                </label>
+
+                <button type="submit" class="auth-submit">
+                    Send trade request
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

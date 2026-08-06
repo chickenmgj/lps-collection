@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% from "macros/lps_card.html" import render_lps_card %}
+
+{% block title %}
+    Admin Panel | LPSChileCollection
+{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">
+    Administrator Panel
+</h2>
+
+<div class="disclaimer">
+    <p>
+        Welcome,
+        <strong>{{ session.get("user_name") }}</strong>.
+        From this panel you can manage your Littlest Pet Shop collection.
+    </p>
+</div>
+
+<div class="admin-dashboard-actions">
+
+    <a
+        href="{{ url_for('new_lps_form') }}"
+        class="dashboard-action"
+    >
+        <span>➕</span>
+
+        <strong>
+            Add New LPS
+        </strong>
+
+        <small>
+            Add a new item to MySQL
+        </small>
+    </a>
+<a
+    href="{{ url_for('admin_trade_requests') }}"
+    class="dashboard-action"
+>
+    <span>📨</span>
+
+    <strong>
+        Trade Requests
+    </strong>
+
+    <small>
+        Review and manage exchange requests
+    </small>
+</a>
+    <a
+        href="{{ url_for('collection') }}"
+        class="dashboard-action"
+    >
+        <span>📦</span>
+
+        <strong>
+            View Collection
+        </strong>
+
+        <small>
+            See all owned items
+        </small>
+    </a>
+
+    <a
+        href="{{ url_for('wishlist') }}"
+        class="dashboard-action"
+    >
+        <span>⭐</span>
+
+        <strong>
+            View Wishlist
+        </strong>
+
+        <small>
+            See wanted items
+        </small>
+    </a>
+
+    <a
+        href="{{ url_for('trade') }}"
+        class="dashboard-action"
+    >
+        <span>🔄</span>
+
+        <strong>
+            View Trade
+        </strong>
+
+        <small>
+            See available items
+        </small>
+    </a>
+
+</div>
+
+<section class="categoria">
+
+    <div class="categoria-info">
+
+        <strong>
+            Manage LPS Items
+        </strong>
+
+        <span>
+            {{ lps_items|length }} items
+        </span>
+
+    </div>
+
+    <div class="cards-grid">
+
+        {% for item in lps_items %}
+
+            {{ render_lps_card(item, admin_mode=true) }}
+
+        {% else %}
+
+            <div class="empty-message">
+
+                <p>
+                    No LPS items have been added yet.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

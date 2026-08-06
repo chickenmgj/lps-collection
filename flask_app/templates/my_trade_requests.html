@@ -1,0 +1,622 @@
+{% extends "base.html" %}
+
+{% block title %}
+    My Trade Requests | LPSChileCollection
+{% endblock %}
+
+{% block content %}
+
+<section class="my-trade-requests-page">
+
+    <div class="collection-heading">
+
+        <div class="collection-heading-text">
+
+            <h1 class="page-title">
+                My Trade Requests
+            </h1>
+
+            <p>
+                Review the trade requests you have sent and check their current status.
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for('trade') }}"
+            class="trade-back-link"
+        >
+            Back to Trade
+        </a>
+
+    </div>
+
+    {% with messages = get_flashed_messages(
+        with_categories=true,
+        category_filter=["success", "trade_request"]
+    ) %}
+
+        {% if messages %}
+
+            <div class="auth-messages">
+
+                {% for category, message in messages %}
+
+                    <div class="
+                        auth-message
+                        {% if category == 'success' %}
+                            trade-success-message
+                        {% else %}
+                            auth-message-error
+                        {% endif %}
+                    ">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+    {% if trade_requests %}
+
+        <div class="trade-requests-list">
+
+            {% for trade_request in trade_requests %}
+
+                <article class="trade-request-summary-card">
+
+                    <div class="trade-request-summary-image">
+
+                        <img
+                            src="{{ trade_request.lps_image }}"
+                            alt="{{ trade_request.lps_name }}"
+                        >
+
+                    </div>
+
+                    <div class="trade-request-summary-content">
+
+                        <div class="trade-request-summary-heading">
+
+                            <div>
+
+                                <span class="trade-request-label">
+                                    Requested item
+                                </span>
+
+                                <h2>
+                                    {{ trade_request.lps_name }}
+                                </h2>
+
+                                <p>
+                                    {{ trade_request.lps_generation }}
+                                    · ID {{ trade_request.lps_id }}
+                                </p>
+
+                            </div>
+
+                            <span class="trade-status trade-status-{{ trade_request.status }}">
+                                {{ trade_request.status.replace("_", " ")|title }}
+                            </span>
+
+                        </div>
+
+                        <div class="trade-request-summary-details">
+
+                            <div>
+                                <strong>Instagram</strong>
+                                <span>{{ trade_request.instagram_username }}</span>
+                            </div>
+
+                            <div>
+                                <strong>Your offer</strong>
+                                <span>{{ trade_request.offered_item }}</span>
+                            </div>
+
+                            <div>
+                                <strong>Submitted</strong>
+                                <span>
+                                    {{ trade_request.created_at.strftime("%d/%m/%Y") }}
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="trade-request-condition">
+
+                            <strong>
+                                Item condition
+                            </strong>
+
+                            <p>
+                                {{ trade_request.item_condition }}
+                            </p>
+
+                        </div>
+
+                        {% if trade_request.message %}
+
+                            <div class="trade-request-condition">
+
+                                <strong>
+                                    Additional message
+                                </strong>
+
+                                <p>
+                                    {{ trade_request.message }}
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+                        {% if trade_request.status == "pending" %}
+
+                            <div class="verification-warning">
+
+                                <strong>
+                                    Request pending
+                                </strong>
+
+                                <p>
+                                    Your request has not been reviewed yet.
+                                    You can cancel it while it remains pending.
+                                </p>
+
+                            </div>
+
+                        {% elif trade_request.status == "accepted" %}
+
+                            <div class="auth-message trade-success-message">
+
+                                <strong>
+                                    Request accepted
+                                </strong>
+
+                                <p>
+                                    Your trade request was accepted. You can now
+                                    prepare your package and register your shipping information.
+                                </p>
+
+                            </div>
+
+                        {% elif trade_request.status == "rejected" %}
+
+                            <div class="auth-message auth-message-error">
+                                This trade request was rejected.
+                            </div>
+
+                        {% elif trade_request.status == "more_info" %}
+
+                            <div class="verification-warning">
+
+                                <strong>
+                                    More information required
+                                </strong>
+
+                                <p>
+                                    Please contact LPS Chile Collection on Instagram
+                                    to provide the requested information.
+                                </p>
+
+                            </div>
+
+                        {% elif trade_request.status == "both_shipped" %}
+
+                            <div class="auth-message trade-success-message">
+                                Both packages have been shipped.
+                            </div>
+
+                        {% elif trade_request.status == "completed" %}
+
+                            <div class="auth-message trade-success-message">
+                                This trade has been completed.
+                            </div>
+
+                        {% endif %}
+
+                        {% if trade_request.admin_shipped_at %}
+
+                            <section class="user-shipping-section">
+
+                                <h3>
+                                    LPS Chile Collection shipping
+                                </h3>
+
+                                <div class="shipping-saved-box">
+
+                                    <div class="admin-detail-row">
+                                        <strong>Shipping company</strong>
+                                        <span>
+                                            {{ trade_request.admin_shipping_company }}
+                                        </span>
+                                    </div>
+
+                                    <div class="admin-detail-row">
+                                        <strong>Tracking number</strong>
+                                        <span>
+                                            {{ trade_request.admin_tracking_number }}
+                                        </span>
+                                    </div>
+
+                                    {% if trade_request.admin_tracking_url %}
+
+                                        <a
+                                            href="{{ trade_request.admin_tracking_url }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="trade-secondary-button"
+                                        >
+                                            Track shipment
+                                        </a>
+
+                                    {% endif %}
+
+                                    {% if trade_request.admin_shipping_note %}
+
+                                        <div class="admin-detail-block">
+
+                                            <strong>
+                                                Shipping note
+                                            </strong>
+
+                                            <p>
+                                                {{ trade_request.admin_shipping_note }}
+                                            </p>
+
+                                        </div>
+
+                                    {% endif %}
+
+                                    {% if trade_request.admin_package_photo %}
+
+                                        <a
+                                            href="{{ url_for(
+                                                'static',
+                                                filename=trade_request.admin_package_photo
+                                            ) }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="admin-package-preview"
+                                        >
+
+                                            <img
+                                                src="{{ url_for(
+                                                    'static',
+                                                    filename=trade_request.admin_package_photo
+                                                ) }}"
+                                                alt="Package sent by LPS Chile Collection"
+                                            >
+
+                                            <span>
+                                                View package photo
+                                            </span>
+
+                                        </a>
+
+                                    {% endif %}
+
+                                    <p class="shipping-date">
+                                        Shipped on:
+                                        {{ trade_request.admin_shipped_at.strftime(
+                                            "%d/%m/%Y at %H:%M"
+                                        ) }}
+                                    </p>
+
+                                </div>
+
+                            </section>
+
+                        {% elif trade_request.status in [
+                            "accepted",
+                            "user_shipped"
+                        ] %}
+
+                            <div class="verification-warning">
+
+                                <strong>
+                                    Admin shipment pending
+                                </strong>
+
+                                <p>
+                                    LPS Chile Collection has not registered its
+                                    shipping information yet.
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+                        {% if trade_request.user_shipped_at %}
+
+                            <section class="user-shipping-section">
+
+                                <h3>
+                                    Your shipping information
+                                </h3>
+
+                                <div class="shipping-saved-box">
+
+                                    <div class="admin-detail-row">
+                                        <strong>Shipping company</strong>
+                                        <span>
+                                            {{ trade_request.user_shipping_company }}
+                                        </span>
+                                    </div>
+
+                                    <div class="admin-detail-row">
+                                        <strong>Tracking number</strong>
+                                        <span>
+                                            {{ trade_request.user_tracking_number }}
+                                        </span>
+                                    </div>
+
+                                    {% if trade_request.user_tracking_url %}
+
+                                        <a
+                                            href="{{ trade_request.user_tracking_url }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="trade-secondary-button"
+                                        >
+                                            Track your shipment
+                                        </a>
+
+                                    {% endif %}
+
+                                    {% if trade_request.user_shipping_note %}
+
+                                        <div class="admin-detail-block">
+
+                                            <strong>
+                                                Your note
+                                            </strong>
+
+                                            <p>
+                                                {{ trade_request.user_shipping_note }}
+                                            </p>
+
+                                        </div>
+
+                                    {% endif %}
+
+                                    {% if trade_request.user_package_photo %}
+
+                                        <a
+                                            href="{{ url_for(
+                                                'static',
+                                                filename=trade_request.user_package_photo
+                                            ) }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="admin-package-preview"
+                                        >
+
+                                            <img
+                                                src="{{ url_for(
+                                                    'static',
+                                                    filename=trade_request.user_package_photo
+                                                ) }}"
+                                                alt="User package photo"
+                                            >
+
+                                            <span>
+                                                View your package photo
+                                            </span>
+
+                                        </a>
+
+                                    {% endif %}
+
+                                    <p class="shipping-date">
+                                        Shipped on:
+                                        {{ trade_request.user_shipped_at.strftime(
+                                            "%d/%m/%Y at %H:%M"
+                                        ) }}
+                                    </p>
+
+                                </div>
+
+                            </section>
+
+                        {% elif trade_request.status in [
+                            "accepted",
+                            "admin_shipped"
+                        ] %}
+
+                            <section class="user-shipping-section">
+
+                                <h3>
+                                    Register your shipment
+                                </h3>
+
+                                <p class="user-shipping-description">
+                                    Add the shipping company, tracking number,
+                                    tracking website and a clear photo of your package.
+                                </p>
+
+                                <form
+                                    action="{{ url_for(
+                                        'update_user_trade_shipping',
+                                        request_id=trade_request.id
+                                    ) }}"
+                                    method="POST"
+                                    enctype="multipart/form-data"
+                                    class="admin-shipping-form"
+                                >
+
+                                    <div class="form-group">
+
+                                        <label for="user_shipping_company_{{ trade_request.id }}">
+                                            Shipping company *
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="user_shipping_company_{{ trade_request.id }}"
+                                            name="user_shipping_company"
+                                            placeholder="Example: Correos de Chile"
+                                            maxlength="100"
+                                            required
+                                        >
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label for="user_tracking_number_{{ trade_request.id }}">
+                                            Tracking number *
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="user_tracking_number_{{ trade_request.id }}"
+                                            name="user_tracking_number"
+                                            placeholder="Enter your tracking number"
+                                            maxlength="150"
+                                            required
+                                        >
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label for="user_tracking_url_{{ trade_request.id }}">
+                                            Tracking website
+                                        </label>
+
+                                        <input
+                                            type="url"
+                                            id="user_tracking_url_{{ trade_request.id }}"
+                                            name="user_tracking_url"
+                                            placeholder="https://..."
+                                            maxlength="500"
+                                        >
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label for="user_shipping_note_{{ trade_request.id }}">
+                                            Shipping note
+                                        </label>
+
+                                        <textarea
+                                            id="user_shipping_note_{{ trade_request.id }}"
+                                            name="user_shipping_note"
+                                            rows="4"
+                                            placeholder="Add packaging or shipping details..."
+                                        ></textarea>
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label for="user_package_photo_{{ trade_request.id }}">
+                                            Package photo *
+                                        </label>
+
+                                        <input
+                                            type="file"
+                                            id="user_package_photo_{{ trade_request.id }}"
+                                            name="user_package_photo"
+                                            accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp"
+                                            required
+                                        >
+
+                                        <small>
+                                            Upload a clear photo of the prepared package.
+                                        </small>
+
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        class="auth-submit"
+                                    >
+                                        Save shipping information
+                                    </button>
+
+                                </form>
+
+                            </section>
+
+                        {% endif %}
+
+                        <div class="trade-request-summary-actions">
+
+                            {% if trade_request.proof_link %}
+
+                                <a
+                                    href="{{ trade_request.proof_link }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="trade-secondary-button"
+                                >
+                                    View proofs
+                                </a>
+
+                            {% endif %}
+
+                            {% if trade_request.status == "pending" %}
+
+                                <form
+                                    action="{{ url_for(
+                                        'cancel_trade_request',
+                                        request_id=trade_request.id
+                                    ) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Are you sure you want to cancel this request?');"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="trade-cancel-button"
+                                    >
+                                        Cancel request
+                                    </button>
+
+                                </form>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-message">
+
+            <h2>
+                No trade requests yet
+            </h2>
+
+            <p>
+                You have not sent any trade requests.
+            </p>
+
+            <a
+                href="{{ url_for('trade') }}"
+                class="auth-submit"
+            >
+                Browse available items
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,137 @@
+{% macro render_filters(
+    search="",
+    selected_generation="",
+    selected_order="priority"
+) %}
+
+<form method="GET" class="collection-filters">
+
+    <div class="filter-search">
+
+        <label for="search" class="sr-only">
+            Search
+        </label>
+
+        <input
+            type="search"
+            id="search"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search by name, ID, category or species..."
+        >
+
+    </div>
+
+    <div class="filter-generation">
+
+        <label for="generation" class="sr-only">
+            Generation
+        </label>
+
+        <select id="generation" name="generation">
+
+            <option value="">
+                All generations
+            </option>
+
+            {% for generation in ["G1", "G2", "G3", "G4", "G5", "G6", "G7"] %}
+
+                <option
+                    value="{{ generation }}"
+                    {% if selected_generation == generation %}
+                        selected
+                    {% endif %}
+                >
+                    {{ generation }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+    <div class="filter-order">
+
+        <label for="order" class="sr-only">
+            Sort results
+        </label>
+
+        <select id="order" name="order">
+
+            <option
+                value="priority"
+                {% if selected_order == "priority" %}
+                    selected
+                {% endif %}
+            >
+                Priority first
+            </option>
+
+            <option
+                value="favorite"
+                {% if selected_order == "favorite" %}
+                    selected
+                {% endif %}
+            >
+                Favorites first
+            </option>
+
+            <option
+                value="name_asc"
+                {% if selected_order == "name_asc" %}
+                    selected
+                {% endif %}
+            >
+                Name A–Z
+            </option>
+
+            <option
+                value="name_desc"
+                {% if selected_order == "name_desc" %}
+                    selected
+                {% endif %}
+            >
+                Name Z–A
+            </option>
+
+            <option
+                value="year_asc"
+                {% if selected_order == "year_asc" %}
+                    selected
+                {% endif %}
+            >
+                Oldest first
+            </option>
+
+            <option
+                value="year_desc"
+                {% if selected_order == "year_desc" %}
+                    selected
+                {% endif %}
+            >
+                Newest first
+            </option>
+
+        </select>
+
+    </div>
+
+    <button type="submit" class="filter-button">
+        Apply
+    </button>
+
+    {% if search or selected_generation or selected_order != "priority" %}
+
+        <a
+            href="{{ request.path }}"
+            class="clear-filter-button"
+        >
+            Clear
+        </a>
+
+    {% endif %}
+
+</form>
+
+{% endmacro %}

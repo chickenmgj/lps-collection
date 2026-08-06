@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Account | LPS Chile Collection
+{% endblock %}
+
+{% block content %}
+
+<section class="auth-page">
+
+    <div class="auth-card">
+
+        <div class="auth-heading">
+            <span class="auth-label">Trade Community</span>
+
+            <h1>Create an account</h1>
+
+            <p>
+                Register to send trade requests and keep track of your
+                exchanges with LPS Chile Collection.
+            </p>
+        </div>
+
+        {% with messages = get_flashed_messages(
+            with_categories=true,
+            category_filter=["register"]
+        ) %}
+
+            {% if messages %}
+
+                <div class="auth-messages">
+
+                    {% for category, message in messages %}
+
+                        <div class="auth-message auth-message-error">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+        <form
+            action="{{ url_for('user_register') }}"
+            method="POST"
+            class="auth-form"
+        >
+
+            <div class="form-group">
+
+                <label for="first_name">
+                    Name
+                </label>
+
+                <input
+                    type="text"
+                    id="first_name"
+                    name="first_name"
+                    placeholder="Your name"
+                    minlength="2"
+                    maxlength="100"
+                    autocomplete="name"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="your@email.com"
+                    maxlength="255"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="At least 8 characters"
+                    minlength="8"
+                    autocomplete="new-password"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="confirm_password">
+                    Confirm password
+                </label>
+
+                <input
+                    type="password"
+                    id="confirm_password"
+                    name="confirm_password"
+                    placeholder="Repeat your password"
+                    minlength="8"
+                    autocomplete="new-password"
+                    required
+                >
+
+            </div>
+
+            <div class="auth-information">
+
+                <strong>Account permissions</strong>
+
+                <p>
+                    User accounts can send and review their own trade
+                    requests. They cannot access the admin panel or edit
+                    the collection.
+                </p>
+
+            </div>
+
+            <button type="submit" class="auth-submit">
+                Create account
+            </button>
+
+        </form>
+
+        <p class="auth-switch">
+
+            Already have an account?
+
+            <a href="{{ url_for('user_login_form') }}">
+                Log in
+            </a>
+
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

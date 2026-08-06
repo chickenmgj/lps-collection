@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+            LPS Chile Collection
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    {% block extra_head %}
+    {% endblock %}
+</head>
+
+<body {% block body_attributes %}{% endblock %}>
+
+<header class="site-header">
+
+    <div class="header-inner">
+
+        <a href="{{ url_for('home') }}" class="brand">
+
+            <img
+                src="{{ url_for('static', filename='images/logo-lps.png') }}"
+                alt="LPS Chile Collection"
+                class="brand-logo"
+            >
+
+            <div class="brand-text">
+                <span class="brand-title">LPS Chile Collection</span>
+                <span class="brand-subtitle">
+                    My Littlest Pet Shop collection
+                </span>
+            </div>
+
+        </a>
+
+        <nav class="main-nav">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="{% if request.endpoint == 'home' %}active{% endif %}"
+            >
+                Home
+            </a>
+
+            <a
+                href="{{ url_for('collection') }}"
+                class="{% if request.endpoint == 'collection' %}active{% endif %}"
+            >
+                My Collection
+            </a>
+
+            <a
+                href="{{ url_for('wishlist') }}"
+                class="{% if request.endpoint == 'wishlist' %}active{% endif %}"
+            >
+                Wishlist
+            </a>
+
+            <a
+                href="{{ url_for('trade') }}"
+                class="{% if request.endpoint == 'trade' %}active{% endif %}"
+            >
+                Trade
+            </a>
+
+            {% if session.get("user_id") %}
+
+                <a href="{{ url_for('admin_dashboard') }}">
+                    Admin Panel
+                </a>
+
+                <a href="{{ url_for('admin_logout') }}" class="nav-account">
+                    Logout
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{{ url_for('admin_login_form') }}"
+                    class="nav-account"
+                >
+                    Admin Login
+                </a>
+
+            {% endif %}
+
+        </nav>
+
+    </div>
+
+</header>
+
+<main>
+
+    {% with messages = get_flashed_messages() %}
+
+    {% if messages %}
+
+        <div class="form-messages">
+
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+{% endwith %}
+
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer class="footer">
+    <div class="footer-bottom">
+        <p>Page created for personal use - 2025</p>
+    </div>
+</footer>
+
+{% block scripts %}
+{% endblock %}
+
+</body>
+</html>
