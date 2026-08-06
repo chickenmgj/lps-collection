@@ -23,3 +23,7 @@ flask_app/static/uploads/
 
 # Archivos temporales
 *.log
+
+ca.pem
+
+lps_collection_backup.sql

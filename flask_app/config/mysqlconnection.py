@@ -24,7 +24,10 @@ class MySQLConnection:
             database=database_name,
             charset="utf8mb4",
             cursorclass=pymysql.cursors.DictCursor,
-            autocommit=True
+            autocommit=True,
+            ssl={
+                "ca": os.getenv("MYSQL_SSL_CA")
+                } if os.getenv("MYSQL_SSL_CA") else None
         )
 
     def query_db(self, query, data=None):
